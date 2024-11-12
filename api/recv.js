@@ -12,10 +12,12 @@ export default (req, res) => {
         datos.push({ s, T, P, H });
         res.status(200).json({ message: 'Datos agregados con éxito' });
       } else {
-        res.status(400).json({ message: 'Faltan campos en el JSON' });
+        console.log("Datos recibidos incompletos:", req.body); // Verifica el cuerpo de la solicitud en caso de error
+        res.status(400).json({ message: 'Faltan campos en el JSON', receivedData: req.body });
       }
     } catch (error) {
-      res.status(400).json({ message: 'Error en el formato del JSON' });
+      console.log("Error en el formato del JSON:", req.body); // Muestra el JSON recibido en caso de formato incorrecto
+      res.status(400).json({ message: 'Error en el formato del JSON', receivedData: req.body });
     }
   } else {
     res.status(405).json({ message: 'Método no permitido' });
