@@ -3,7 +3,7 @@
 let datos = global.datos || [];
 global.datos = datos;
 
-export default async function handler(req, res) {
+export default (req, res) => {
   if (req.method === 'POST') {
     try {
       const { s, T, P, H } = req.body;
@@ -21,5 +21,3 @@ export default async function handler(req, res) {
     res.status(405).json({ message: 'Método no permitido' });
   }
 }
-
-
