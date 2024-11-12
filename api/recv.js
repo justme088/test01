@@ -8,7 +8,8 @@ export default (req, res) => {
     try {
       const { s, T, P, H } = req.body;
 
-      if (s && T && P && H) {
+      // Verificación robusta para asegurarse de que cada clave está definida
+      if ([s, T, P, H].every(value => value !== undefined && value !== null)) {
         datos.push({ s, T, P, H });
         res.status(200).json({ message: 'Datos agregados con éxito' });
       } else {
