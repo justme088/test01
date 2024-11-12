@@ -13,12 +13,30 @@ export default (req, res) => {
         datos.push({ s, T, P, H });
         res.status(200).json({ message: 'Datos agregados con éxito' });
       } else {
-        console.log("Datos recibidos incompletos:", req.body); // Verifica el cuerpo de la solicitud en caso de error
+        console.log("Datos recibidos incompletos:", req.body);
         res.status(400).json({ message: 'Faltan campos en el JSON', receivedData: req.body });
       }
     } catch (error) {
-      console.log("Error en el formato del JSON:", req.body); // Muestra el JSON recibido en caso de formato incorrecto
+      console.log("Error en el formato del JSON:", req.body);
       res.status(400).json({ message: 'Error en el formato del JSON', receivedData: req.body });
+    }
+  } else if (req.method === 'GET') {
+    const { clear } = req.query;
+
+    if (clear) {
+      // Si el parámetro "clear" está presente, limpia los datos
+      datos = [];
+      global.datos = datos; // Actualiza la variable global para asegurarse de que se refleje el cambio
+      res.status(200).json({ message: 'Datos borrados exitosamente' });
+    } else {
+      // Si no se proporciona "clear", convierte los datos a CSV y envíalos
+      const csvHeader = 's,T,P,H\n';
+      const csvData = datos.map(row => `${row.s},${row.T},${row.P},${row.H}`).join('\n');
+      const csvContent = csvHeader + csvData;
+
+      res.setHeader('Content-Type', 'text/csv');
+      res.setHeader('Content-Disposition', 'attachment; filename=datos.csv');
+      res.status(200).send(csvContent);
     }
   } else {
     res.status(405).json({ message: 'Método no permitido' });
