@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"build": "npm install",
+		"build": "npm install build --output public",
 		"test": "node index.js",
 		"start": "node ./node_modules/node-red/red.js --userDir ./"
 	},
